@@ -1,7 +1,7 @@
 from setuptools import setup
 
 APP = ['src/main.py']
-DATA_FILES = [('html', ['src/html/index.html'])]
+DATA_FILES = [('', ['src/html/index.html'])]
 OPTIONS = {
     'iconfile': 'src/icon.icns',
     'plist': {
@@ -9,7 +9,7 @@ OPTIONS = {
         'CFBundleShortVersionString': '1.0.0',
         'CFBundleVersion': '1.0.0',
     },
-    'includes': ['wxPython','upnpclient','qrcode', 'pipreqs'],
+    'includes': ['wxPython','upnpclient','qrcode' ],
 }
 
 setup(

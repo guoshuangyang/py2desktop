@@ -1,4 +1,3 @@
-import upnpclient
 import qrcode
 import os
 import wx
@@ -38,7 +37,6 @@ class QRCodeFrame(wx.Frame):
         return img
 
     def update_qrcode(self, new_url):
-        print("更新二维码->>>", new_url)
         self.qrcode_bitmap.Destroy()  # Destroy the old bitmap
         self.qrcode_bitmap = self.create_qrcode_bitmap(new_url)
         self.imgBitmap.SetBitmap(self.qrcode_bitmap)
@@ -64,10 +62,10 @@ class HttpHandler(http.server.SimpleHTTPRequestHandler):
     self.send_response(200)
     self.send_header("Content-type", "text/html")
     self.end_headers()
-
+    fileDir = os.path.dirname(os.path.abspath(__file__))
     # 返回本地的index.html文件
-    with open("src/html/index.html", "rb") as f:
-      self.wfile.write(f.read())
+    with open(fileDir + "/html/index.html", "rb") as f:
+        self.wfile.write(f.read())
   # 测试是否可以连接的接口, 返回json数据
   def do_POST(self):
     self.send_response(200)
@@ -83,12 +81,9 @@ def start_web_server(port = 9790, frame = None):
             with socketserver.TCPServer(("", port), HttpHandler) as httpd:
                 if frame:
                     frame.update_qrcode("http://{}:{}".format(get_local_ip(), port))
-                    # 十秒后更新二维码
-                    threading.Timer(3, frame.update_qrcode, ["    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio tempore magni numquam, atque magnam reprehenderit hic! Deserunt quaerat harum quas alias maxime. Officia nulla voluptate voluptas quos totam exercitationem distinctio aspernatur consequatur expedita ipsam consectetur non dignissimos error sit quaerat enim, hic harum minus minima soluta odit provident molestiae commodi nihil. Culpa, quidem rem voluptate sed a odit reprehenderit. Asperiores voluptatem maiores repellat reprehenderit! Porro reprehenderit beatae, blanditiis aut nemo itaque qui natus quasi eligendi excepturi eaque iure tenetur modi illum odit sunt cupiditate est in sequi rem delectus. Ad nostrum doloribus aliquid. Sapiente odit suscipit blanditiis repellendus commodi. Deleniti!  ????????"]).start()
                 httpd.serve_forever()
 
         except Exception as e:
-            print("启动服务失败：{}".format(e))
             # 代码暂停
             print("端口 {} 被占用，尝试使用其他端口".format(port))
             port += 1
@@ -98,27 +93,17 @@ def start_web_server(port = 9790, frame = None):
 
 
 def render(boolean, ip, port = 9790):
+    frame = QRCodeFrame("http://{}:{}".format(ip, port))
     if boolean:
-        frame = QRCodeFrame("http://{}:{}".format(ip, port))
         server_thread = threading.Thread(target=start_web_server, args=(port, frame,))
         server_thread.daemon = True
         server_thread.start()
-        frame.Show()
-
     else:
-        wx.StaticText(frm, -1, "启动服务失败", style=wx.ALIGN_CENTER)
+        wx.StaticText(frame, -1, "启动服务失败", style=wx.ALIGN_CENTER)
+    frame.Show()
     app.MainLoop()
 
 
-
-def search_upnp_devices():
-    devices = upnpclient.discover()
-    print("查找到 {} 个 UPnP 设备：".format(len(devices)))
-    for i, device in enumerate(devices):
-        print("设备 {} ：{}".format(i + 1, device.friendly_name))
-        for service in device.services:
-            print(service)
-        print("\n")
 
 def start():
     ip = get_local_ip()
@@ -126,6 +111,6 @@ def start():
     if ip:
         render(True, ip, port)
     else:
-        render(False)
+        render(False,None)
 
 start()
