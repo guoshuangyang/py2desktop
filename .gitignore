@@ -1,0 +1,6 @@
+venv
+.eggs
+*.egg
+build
+dist
+.DS_Store

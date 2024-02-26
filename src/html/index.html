@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>唤起QQ音乐</title>
+  </head>
+  <body>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio tempore magni
+    numquam, atque magnam reprehenderit hic! Deserunt quaerat harum quas alias
+    maxime. Officia nulla voluptate voluptas quos totam exercitationem
+    distinctio aspernatur consequatur expedita ipsam consectetur non dignissimos
+    error sit quaerat enim, hic harum minus minima soluta odit provident
+    molestiae commodi nihil. Culpa, quidem rem voluptate sed a odit
+    reprehenderit. Asperiores voluptatem maiores repellat reprehenderit! Porro
+    reprehenderit beatae, blanditiis aut nemo itaque qui natus quasi eligendi
+    excepturi eaque iure tenetur modi illum odit sunt cupiditate est in sequi
+    rem delectus. Ad nostrum doloribus aliquid. Sapiente odit suscipit
+    blanditiis repellendus commodi. Deleniti!
+    <script>
+      fetch(location.origin, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === "ok") {
+            // 连接成功
+            console.log("连接成功");
+          }
+        });
+    </script>
+  </body>
+</html>
