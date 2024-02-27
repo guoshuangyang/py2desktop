@@ -26,12 +26,13 @@ python main.py
 
 ## 打包
 ```shell
-python3 setup.py py2app
+python setup.py py2app
 ```
 
 ## 打包（调试）
 ```shell
-python3 setup.py py2app -A
+# python setup.py py2app -A
+# pyinstaller Scanner.spec
 ```
 
 ## 生成requirements.txt
